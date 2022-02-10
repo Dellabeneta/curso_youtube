@@ -1,4 +1,4 @@
-#três primeiros blocos básicos para acesso e comunição com o provider.
+#três primeiros blocos básicos para acesso e comunicação com o provider.
 provider "digitalocean" {
   token = var.do_token
 }
@@ -13,7 +13,7 @@ terraform {
   }
 }
 
-#inserindo chave publica no servidor para acesso posterior.
+#inserindo chave pública no servidor para acesso posterior.
 resource "digitalocean_ssh_key" "curso" {
   name       = "curso"
   public_key = file("C:/Users/Administrador/.ssh/id_rsa.pub")
@@ -50,13 +50,14 @@ resource "digitalocean_droplet" "droplet1" {
 
   ssh_keys = [digitalocean_ssh_key.curso.id]
 
-  connection {
+    /*
+    connection {
     host        = digitalocean_droplet.droplet1.ipv4_address
     type        = "ssh"
     user        = "root"
     private_key = file("C:/Users/Administrador/.ssh/id_rsa")
-  }
-    /*
+    }
+    
     provisioner "remote-exec" {
     inline = ["sleep 20", "apt install nginx -y",
               "sleep 20", "echo '${digitalocean_droplet.droplet1.name}' >> /var/www/html/index.nginx-debian.html"]              
@@ -73,13 +74,14 @@ resource "digitalocean_droplet" "droplet2" {
 
   ssh_keys = [digitalocean_ssh_key.curso.id]
 
-  connection {
+    /*
+    connection {
     host        = digitalocean_droplet.droplet2.ipv4_address
     type        = "ssh"
     user        = "root"
     private_key = file("C:/Users/Administrador/.ssh/id_rsa")
-  }
-    /*  
+    }
+      
     provisioner "remote-exec" {
     inline = ["sleep 20", "apt install nginx -y",
               "sleep 20", "echo '${digitalocean_droplet.droplet2.name}' >> /var/www/html/index.nginx-debian.html"]              
