@@ -40,7 +40,6 @@ resource "digitalocean_loadbalancer" "public" {
   droplet_ids = [digitalocean_droplet.droplet1.id, digitalocean_droplet.droplet2.id]
 }
 
-
 #provisionamento do primeiro servidor.
 resource "digitalocean_droplet" "droplet1" {
   name   = "webserver-1"
@@ -88,7 +87,6 @@ resource "digitalocean_droplet" "droplet2" {
     }
     */ 
 }
-
 
 #imprimindo em tela o valor dos IPs dos servidores.
 output "droplet1_ip" {
