@@ -3,7 +3,9 @@ provider "digitalocean" {
   token = var.do_token
 }
 
-variable "do_token" {}
+variable "do_token" {
+  default = "DIGITALOCEAN_TOKEN"
+}
 
 terraform {
   required_providers {
