@@ -88,6 +88,7 @@ resource "digitalocean_droplet" "droplet2" {
     */ 
 }
 
+
 #imprimindo em tela o valor dos IPs dos servidores.
 output "droplet1_ip" {
   value = digitalocean_droplet.droplet1.ipv4_address
@@ -97,10 +98,6 @@ output "droplet2_ip" {
   value = digitalocean_droplet.droplet2.ipv4_address
 }
 
-output "droplet3_ip" {
-  value = digitalocean_droplet.droplet3.ipv4_address
-}
-
 #imprimindo em tela o valor dos IDs dos servidores.
 output "droplet1_id" {
   value = digitalocean_droplet.droplet1.id
@@ -108,10 +105,6 @@ output "droplet1_id" {
 
 output "droplet2_id" {
   value = digitalocean_droplet.droplet2.id
-}
-
-output "droplet3_id" {
-  value = digitalocean_droplet.droplet3.id
 }
 
 #imprimindo em tela o valor do IP do load balancer.
