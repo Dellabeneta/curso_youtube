@@ -75,17 +75,17 @@ resource "digitalocean_droplet" "droplet2" {
 
     /*
     connection {
-    host        = digitalocean_droplet.droplet2.ipv4_address
+    host        = digitalocean_droplet.droplet1.ipv4_address
     type        = "ssh"
     user        = "root"
     private_key = file("C:/Users/Administrador/.ssh/id_rsa")
     }
-      
+    
     provisioner "remote-exec" {
     inline = ["sleep 20", "apt install nginx -y",
-              "sleep 20", "echo '${digitalocean_droplet.droplet2.name}' >> /var/www/html/index.nginx-debian.html"]              
+              "sleep 20", "echo '${digitalocean_droplet.droplet1.name}' >> /var/www/html/index.nginx-debian.html"]              
     }
-    */ 
+    */
 }
 
 
@@ -96,15 +96,6 @@ output "droplet1_ip" {
 
 output "droplet2_ip" {
   value = digitalocean_droplet.droplet2.ipv4_address
-}
-
-#imprimindo em tela o valor dos IDs dos servidores.
-output "droplet1_id" {
-  value = digitalocean_droplet.droplet1.id
-}
-
-output "droplet2_id" {
-  value = digitalocean_droplet.droplet2.id
 }
 
 #imprimindo em tela o valor do IP do load balancer.
