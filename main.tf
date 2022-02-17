@@ -88,30 +88,6 @@ resource "digitalocean_droplet" "droplet2" {
     */ 
 }
 
-#provisionamento do segundo servidor.
-resource "digitalocean_droplet" "droplet3" {
-  name   = "webserver-3"
-  size   = "s-1vcpu-1gb"
-  image  = "ubuntu-20-04-x64"
-  region = "nyc3"
-
-  ssh_keys = [digitalocean_ssh_key.curso.id]
-
-    /*
-    connection {
-    host        = digitalocean_droplet.droplet2.ipv4_address
-    type        = "ssh"
-    user        = "root"
-    private_key = file("C:/Users/Administrador/.ssh/id_rsa")
-    }
-      
-    provisioner "remote-exec" {
-    inline = ["sleep 20", "apt install nginx -y",
-              "sleep 20", "echo '${digitalocean_droplet.droplet2.name}' >> /var/www/html/index.nginx-debian.html"]              
-    }
-    */ 
-}
-
 #imprimindo em tela o valor dos IPs dos servidores.
 output "droplet1_ip" {
   value = digitalocean_droplet.droplet1.ipv4_address
