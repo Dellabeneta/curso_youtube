@@ -1,4 +1,3 @@
-#três primeiros blocos básicos para acesso e comunicação com o provider.
 provider "digitalocean" {
   token = var.do_token
 }
@@ -13,16 +12,14 @@ terraform {
   }
 }
 
-#inserindo chave pública no servidor para acesso remoto sem login/senha.
 resource "digitalocean_ssh_key" "curso" {
   name       = "curso"
   public_key = file("C:/Users/Administrador/.ssh/id_rsa.pub")
 }
 
-#provisionamento do load balancer.
 resource "digitalocean_loadbalancer" "public" {
- name   = "loadbalancer"
-  region = "nyc3"
+  name   = var.lb_name
+  region = var.region
 
   forwarding_rule {
     entry_port     = 80
@@ -37,66 +34,45 @@ resource "digitalocean_loadbalancer" "public" {
     protocol = "tcp"
   }
 
-  droplet_ids = [digitalocean_droplet.droplet1.id, digitalocean_droplet.droplet2.id]
+  droplet_ids = digitalocean_droplet.droplet[*].id
 }
 
-#provisionamento do primeiro servidor.
-resource "digitalocean_droplet" "droplet1" {
-  name   = "webserver-1"
-  size   = "s-1vcpu-1gb"
-  image  = "ubuntu-20-04-x64"
-  region = "nyc3"
-
+resource "digitalocean_droplet" "droplet" {
+  name   = "webserver-${count.index}"
+  size   = var.servers_size
+  image  = var.servers_image
+  region = var.region
   ssh_keys = [digitalocean_ssh_key.curso.id]
 
-  /*
-    connection {
-    host        = digitalocean_droplet.droplet1.ipv4_address
+  
+  connection {
+    host        = self.ipv4_address
     type        = "ssh"
     user        = "root"
     private_key = file("C:/Users/Administrador/.ssh/id_rsa")
-    }
-    
-    provisioner "remote-exec" {
-    inline = ["sleep 20", "apt install nginx -y",
-              "sleep 20", "echo '${digitalocean_droplet.droplet1.name}' >> /var/www/html/index.nginx-debian.html"]              
-    }
-    */
-    }
+  }
 
-#provisionamento do segundo servidor.
-resource "digitalocean_droplet" "droplet2" {
-  name   = "webserver-2"
-  size   = "s-1vcpu-1gb"
-  image  = "ubuntu-20-04-x64"
-  region = "nyc3"
-
-  ssh_keys = [digitalocean_ssh_key.curso.id]
-
-    /*
-    connection {
-    host        = digitalocean_droplet.droplet1.ipv4_address
-    type        = "ssh"
-    user        = "root"
-    private_key = file("C:/Users/Administrador/.ssh/id_rsa")
-    }
-    
-    provisioner "remote-exec" {
-    inline = ["sleep 20", "apt install nginx -y",
-              "sleep 20", "echo '${digitalocean_droplet.droplet1.name}' >> /var/www/html/index.nginx-debian.html"]              
-    }
-    */
+  provisioner "remote-exec" {
+    inline = ["sleep 20", "apt install apache2 -y",
+    "sleep 20", "echo $HOSTNAME > /var/www/html/index.html"]
+  }
+  
+  count = 2
 }
 
-#imprimindo em tela o valor dos IPs dos servidores.
-output "droplet1_ip" {
-  value = digitalocean_droplet.droplet1.ipv4_address
+resource "digitalocean_database_cluster" "postgres" {
+  name       = var.cluster_name
+  engine     = var.cluster_engine
+  version    = var.cluster_version
+  size       = var.cluster_size
+  region     = var.region
+  node_count = var.cluster_node_count
 }
 
-output "droplet2_ip" {
-  value = digitalocean_droplet.droplet2.ipv4_address
+output "droplets" {
+  value = digitalocean_droplet.droplet[*].ipv4_address
 }
-#imprimindo em tela o valor do IP do load balancer.
+
 output "public" {
   value = digitalocean_loadbalancer.public.ip
 }

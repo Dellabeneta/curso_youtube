@@ -2,11 +2,11 @@ variable "region" {
   default = "nyc3"
 }
 
-variable "server_size" {
+variable "servers_size" {
   default = "s-1vcpu-1gb"
 }
 
-variable "server_image" {
+variable "servers_image" {
   default = "ubuntu-20-04-x64"
 }
 
