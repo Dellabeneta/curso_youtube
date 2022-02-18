@@ -56,7 +56,7 @@ resource "digitalocean_droplet" "droplet" {
     inline = ["sleep 20",
               "apt install apache2 -y",
               "sleep 10",
-              "echo webserver-'${count.index}' > /var/www/html/index.html"]
+              "echo WEBSERVER-'${count.index}' > /var/www/html/index.html"]
   }
   count = 2
 }
