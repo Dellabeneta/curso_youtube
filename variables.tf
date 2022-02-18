@@ -1,5 +1,5 @@
 variable "region" {
-  default = "nyc3"
+  default = "nyc1"
 }
 
 variable "servers_size" {
