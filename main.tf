@@ -21,7 +21,7 @@ resource "digitalocean_ssh_key" "curso" {
 
 #provisionamento do load balancer.
 resource "digitalocean_loadbalancer" "public" {
-  name   = "loadbalancer"
+ name   = "loadbalancer"
   region = "nyc3"
 
   forwarding_rule {
@@ -49,7 +49,7 @@ resource "digitalocean_droplet" "droplet1" {
 
   ssh_keys = [digitalocean_ssh_key.curso.id]
 
-    /*
+  /*
     connection {
     host        = digitalocean_droplet.droplet1.ipv4_address
     type        = "ssh"
@@ -62,7 +62,7 @@ resource "digitalocean_droplet" "droplet1" {
               "sleep 20", "echo '${digitalocean_droplet.droplet1.name}' >> /var/www/html/index.nginx-debian.html"]              
     }
     */
-}
+    }
 
 #provisionamento do segundo servidor.
 resource "digitalocean_droplet" "droplet2" {
@@ -88,7 +88,6 @@ resource "digitalocean_droplet" "droplet2" {
     */
 }
 
-
 #imprimindo em tela o valor dos IPs dos servidores.
 output "droplet1_ip" {
   value = digitalocean_droplet.droplet1.ipv4_address
@@ -97,7 +96,6 @@ output "droplet1_ip" {
 output "droplet2_ip" {
   value = digitalocean_droplet.droplet2.ipv4_address
 }
-
 #imprimindo em tela o valor do IP do load balancer.
 output "public" {
   value = digitalocean_loadbalancer.public.ip
