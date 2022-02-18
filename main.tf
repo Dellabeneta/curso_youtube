@@ -53,8 +53,8 @@ resource "digitalocean_droplet" "droplet" {
   }
 
   provisioner "remote-exec" {
-    inline = ["sleep 20", "apt install apache2 -y",
-    "sleep 20", "echo $HOSTNAME > /var/www/html/index.html"]
+    inline = ["sleep 10", "apt install apache2 -y",
+    "sleep 10", "echo $HOSTNAME > /var/www/html/index.html"]
   }
   
   count = 2
