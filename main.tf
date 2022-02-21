@@ -42,8 +42,9 @@ resource "digitalocean_droplet" "droplet" {
   size   = var.servers_size
   image  = var.servers_image
   region = var.region
+  count = 2
   ssh_keys = [digitalocean_ssh_key.curso.id]
-
+  
   
   connection {
     host        = self.ipv4_address
@@ -56,9 +57,9 @@ resource "digitalocean_droplet" "droplet" {
     inline = ["sleep 20",
               "apt install apache2 -y",
               "sleep 10",
-              "echo WEBSERVER-'${count.index}' > /var/www/html/index.html"]
+              "echo webserver-'${count.index}' > /var/www/html/index.html"]
   }
-  count = 2
+  
 }
 
 resource "digitalocean_database_cluster" "postgres" {
@@ -70,10 +71,10 @@ resource "digitalocean_database_cluster" "postgres" {
   node_count = var.cluster_node_count
 }
 
-output "droplets" {
+output "droplets_ips" {
   value = digitalocean_droplet.droplet[*].ipv4_address
 }
 
-output "public" {
+output "loadbalancer_ip" {
   value = digitalocean_loadbalancer.public.ip
 }
