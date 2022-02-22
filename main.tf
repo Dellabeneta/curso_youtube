@@ -71,6 +71,7 @@ resource "digitalocean_database_cluster" "postgres" {
   node_count = var.cluster_node_count
 }
 
+
 output "droplets_ips" {
   value = digitalocean_droplet.droplet[*].ipv4_address
 }
