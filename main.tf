@@ -12,10 +12,12 @@ terraform {
   }
 }
 
+
 resource "digitalocean_ssh_key" "curso" {
   name       = "curso"
   public_key = file("C:/Users/Administrador/.ssh/id_rsa.pub")
 }
+
 
 resource "digitalocean_loadbalancer" "public" {
   name   = var.lb_name
@@ -37,6 +39,7 @@ resource "digitalocean_loadbalancer" "public" {
   droplet_ids = digitalocean_droplet.droplet[*].id
 }
 
+
 resource "digitalocean_droplet" "droplet" {
   name   = "webserver-${count.index}"
   size   = var.servers_size
@@ -44,7 +47,6 @@ resource "digitalocean_droplet" "droplet" {
   region = var.region
   count = 2
   ssh_keys = [digitalocean_ssh_key.curso.id]
-  
   
   connection {
     host        = self.ipv4_address
@@ -59,8 +61,8 @@ resource "digitalocean_droplet" "droplet" {
               "sleep 10",
               "echo webserver-'${count.index}' > /var/www/html/index.html"]
   }
-  
 }
+
 
 resource "digitalocean_database_cluster" "postgres" {
   name       = var.cluster_name
