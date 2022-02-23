@@ -33,3 +33,7 @@ variable "cluster_size" {
 variable "cluster_node_count" {
   default = 1
 }
+
+variable "firewall_name" {
+  default = "firewall"
+}
