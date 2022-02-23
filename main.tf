@@ -41,13 +41,14 @@ resource "digitalocean_loadbalancer" "public" {
 
 
 resource "digitalocean_droplet" "droplet" {
-  name   = "webserver-${count.index}"
-  size   = var.servers_size
-  image  = var.servers_image
-  region = var.region
-  count = 2
+  name     = "webserver-${count.index}"
+  size     = var.servers_size
+  image    = var.servers_image
+  region   = var.region
+  count    = 2
   ssh_keys = [digitalocean_ssh_key.curso.id]
-  
+  tags = [ "webserver" ]
+
   connection {
     host        = self.ipv4_address
     type        = "ssh"
@@ -57,9 +58,9 @@ resource "digitalocean_droplet" "droplet" {
 
   provisioner "remote-exec" {
     inline = ["sleep 20",
-              "apt install apache2 -y",
-              "sleep 10",
-              "echo webserver-'${count.index}' > /var/www/html/index.html"]
+      "apt install apache2 -y",
+      "sleep 10",
+    "echo webserver-'${count.index}' > /var/www/html/index.html"]
   }
 }
 
