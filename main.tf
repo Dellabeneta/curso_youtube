@@ -48,6 +48,7 @@ resource "digitalocean_droplet" "droplet" {
   count    = 2
   ssh_keys = [digitalocean_ssh_key.curso.id]
   tags = [ "webserver" ]
+  
 
   connection {
     host        = self.ipv4_address
